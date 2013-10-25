@@ -24,7 +24,6 @@ mv composer.phar /usr/local/bin/composer
 export DEBIAN_FRONTEND=noninteractive
 apt-get -q -y install mysql-server-5.5
 apt-get install -y git
-
 #END FIRST RUN STUFF
 
 # Remove /var/www default
