@@ -1,54 +1,53 @@
 #!/usr/bin/env bash
 
+# Update the box
+# --------------
+# Downloads the package lists from the repositories
+# and "updates" them to get information on the newest
+# versions of packages and their dependencies
+
+#FIRST RUN STUFF
 apt-get update
 apt-get install -y apache2
-apt-get install -y php5
+apt-get install php5
+apt-get install -y libapache2-mod-php5
 apt-get install -y php5-cli
-apt-get install -y php5-mcrypt
-apt-get install -y php5-gd
-apt-get install -y php5-apc
-apt-get install -y beanstalkd
-apt-get install -y git
-apt-get install -y sqlite
-apt-get install -y php5-sqlite
-apt-get install -y curl
+apt-get install -y php5-mysql
 apt-get install -y php5-curl
+apt-get install -y php5-mcrypt
+apt-get install php5-dev
+sudo apt-get install php-apc
+apt-get install make
+apt-get install -y curl
+curl -s https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+export DEBIAN_FRONTEND=noninteractive
+apt-get -q -y install mysql-server-5.5
+apt-get install git
+curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+chsh -s $(which zsh)
+#END FIRST RUN STUFF
 
-sudo debconf-set-selections <<< 'mysql-server-<version> mysql-server/root_password password root'
-sudo debconf-set-selections <<< 'mysql-server-<version> mysql-server/root_password_again password root'
-sudo apt-get -y install mysql-server
+# Remove /var/www default
+rm -rf /var/www
+# Symlink /vagrant to /var/www
+ln -fs /vagrant /var/www
 
-
+# Add ServerName to httpd.conf
+echo "ServerName localhost" > /etc/apache2/httpd.conf
 # Setup hosts file
 VHOST=$(cat <<EOF
-    <VirtualHost *:80>
-            ServerAdmin webmaster@localhost
-
-            DocumentRoot /var/www/public
-            <Directory />
-                    Options FollowSymLinks
-                    AllowOverride All
-            </Directory>
-            <Directory /var/www/public/>
-                    Options Indexes FollowSymLinks MultiViews
-                    AllowOverride All
-                    Order allow,deny
-                    allow from all
-            </Directory>
-            DirectoryIndex index.php
-            ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-            <Directory "/usr/lib/cgi-bin">
-                    AllowOverride None
-                    Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-                    Order allow,deny
-                    Allow from all
-            </Directory>
-    </VirtualHost>
+<VirtualHost *:80>
+  DocumentRoot "/vagrant/public"
+  ServerName localhost
+  <Directory "/vagrant/public">
+    AllowOverride All
+  </Directory>
+</VirtualHost>
 EOF
 )
 echo "${VHOST}" > /etc/apache2/sites-enabled/000-default
-
 # Enable mod_rewrite
-sudo a2enmod rewrite
-
-sudo service apache2 restart
+a2enmod rewrite
+# Restart apache
+service apache2 restart
