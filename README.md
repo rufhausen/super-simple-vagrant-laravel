@@ -13,7 +13,7 @@ For Ubuntu 12.04. Created for Laravel development, but could be used for other s
 
 
 ###Acknowledgements
-I combined a little code from two other Vagrant/Laravel repos:
+I originally combined a little code from two other Vagrant/Laravel repos:
 
 - https://github.com/bryannielsen/Laravel4-Vagrant
 - https://github.com/duellsy/Laravel-4-Vagrant
