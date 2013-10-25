@@ -23,9 +23,8 @@ curl -s https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 export DEBIAN_FRONTEND=noninteractive
 apt-get -q -y install mysql-server-5.5
-apt-get install git
-curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
-chsh -s $(which zsh)
+apt-get install -y git
+
 #END FIRST RUN STUFF
 
 # Remove /var/www default
