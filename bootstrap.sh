@@ -7,6 +7,7 @@
 # versions of packages and their dependencies
 
 #FIRST RUN STUFF
+
 apt-get update
 apt-get install -y apache2
 apt-get install php5
@@ -24,6 +25,8 @@ mv composer.phar /usr/local/bin/composer
 export DEBIAN_FRONTEND=noninteractive
 apt-get -q -y install mysql-server-5.5
 apt-get install -y git
+apt-get install zsh
+
 #END FIRST RUN STUFF
 
 # Remove /var/www default
